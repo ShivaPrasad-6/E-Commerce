@@ -1,9 +1,13 @@
 import Header from '../../components/Header/Header'
 import './HomePage.css'
+import homeFavicon from '../../assets/home-favicon.png'
 
 function HomePage() {
   return (
     <>
+    <title>Ecommerce Project</title>
+    <link rel="icon" type="image/svg+xml" href={homeFavicon} />
+
     <Header />
     <div className="home-page">
       <div className="products-grid">
