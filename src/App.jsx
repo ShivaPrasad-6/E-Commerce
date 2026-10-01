@@ -11,6 +11,7 @@ function App() {
       <Route path="/checkout" element={<Checkout />} />
     </Routes>
   )
+
 }
 
 export default App
