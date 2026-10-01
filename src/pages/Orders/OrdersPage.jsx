@@ -1,11 +1,14 @@
 import Header from "../../components/Header/Header";
 import "./OrdersPage.css";
+import ordersFavicon from '../../assets/orders-favicon.png';
 
 export function OrdersPage() {
 
     return (
     <>
         <title>Orders</title>
+        <link rel="icon" type="image/svg+xml" href={ordersFavicon} />
+        
         <Header />
 
         <div className="orders-page">
