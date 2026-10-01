@@ -84,7 +84,7 @@ export function OrdersPage() {
                 </div>
 
                 <div className="product-actions">
-                <a href="tracking.html">
+                <a onClick={() => window.location.href = "/tracking"}>
                     <button className="track-package-button button-secondary">
                     Track package
                     </button>
