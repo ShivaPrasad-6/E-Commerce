@@ -1,4 +1,5 @@
-import HomePage from './pages/HomePage'
+import HomePage from './pages/HomePage/HomePage'
+import Checkout from './pages/Checkout/Checkout'  
 import { Routes, Route } from 'react-router'
 import './App.css'
 
