@@ -30,7 +30,7 @@ function HomePage() {
                 ${ (product.priceCents / 100).toFixed(2) }
               </div>
               <div className="product-quantity-container">
-                <select>
+              <select>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
