@@ -1,9 +1,33 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import Header from "../../components/Header/Header";
 import "./HomePage.css";
 import homeFavicon from "../../assets/home-favicon.png";
-import { products } from "../../assets/data/products";
+// import { products } from "../../assets/data/products";
 
 function HomePage() {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    // fetch('http://localhost:3000/api/products')
+    //   .then((response) => {
+    //     return response.json();
+    //   }).then((data) => {
+    //     console.log(data)
+    //     setProducts(data);
+    //   }).catch((error) => {
+    //     console.error('Error fetching products:', error);
+    //   });
+
+    axios
+      .get("http://localhost:3000/api/products")
+      .then((response) => {
+        setProducts(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+  }, []);
+
   return (
     <>
       <title>Ecommerce Project</title>
