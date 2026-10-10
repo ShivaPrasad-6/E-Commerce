@@ -1,7 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import './Header.css';
 
-function Header() {
+function Header( { cart } ) {
+  let cartQuantity = 0;
+  if (cart && Array.isArray(cart)) {
+    cartQuantity = cart.reduce((total, item) => total + item.quantity, 0);
+  }
+
   const navigate = useNavigate();
 
   const openOrders = () => {
@@ -50,7 +55,7 @@ function Header() {
             onClick={openCheckout}
           >
             <img className="cart-icon" src="images/icons/cart-icon.png" />
-            <div className="cart-quantity">3</div>
+            <div className="cart-quantity">{cartQuantity}</div>
             <div className="cart-text">Cart</div>
           </a>
         </div>
