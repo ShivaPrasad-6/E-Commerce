@@ -3,6 +3,7 @@ import axios from "axios";
 import Header from "../../components/Header/Header";
 import "./HomePage.css";
 import homeFavicon from "../../assets/home-favicon.png";
+import { formatPrice } from "../../utils/price";
 // import { products } from "../../assets/data/products";
 
 function HomePage( { cart } ) {
@@ -57,7 +58,7 @@ function HomePage( { cart } ) {
                 </div>
               </div>
               <div className="product-price">
-                ${(product.priceCents / 100).toFixed(2)}
+                {formatPrice(product.priceCents)}
               </div>
               <div className="product-quantity-container">
                 <select>
