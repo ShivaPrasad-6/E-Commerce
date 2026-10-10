@@ -21,7 +21,7 @@ function HomePage() {
     //   });
 
     axios
-      .get("http://localhost:3000/api/products")
+      .get("/api/products")
       .then((response) => {
         setProducts(response.data);
       })
@@ -29,7 +29,7 @@ function HomePage() {
         console.error("Error fetching products:", error);
       });
     axios
-      .get("http://localhost:3000/api/cart-items")
+      .get("/api/cart-items")
       .then((response) => {
         console.log("Cart items fetched:", response.data);
         setCart(response.data);
