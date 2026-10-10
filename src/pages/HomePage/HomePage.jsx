@@ -7,6 +7,8 @@ import homeFavicon from "../../assets/home-favicon.png";
 
 function HomePage() {
   const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
+
   useEffect(() => {
     // fetch('http://localhost:3000/api/products')
     //   .then((response) => {
@@ -26,6 +28,15 @@ function HomePage() {
       .catch((error) => {
         console.error("Error fetching products:", error);
       });
+    axios
+      .get("http://localhost:3000/api/cart-items")
+      .then((response) => {
+        console.log("Cart items fetched:", response.data);
+        setCart(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching cart items:", error);
+      });
   }, []);
 
   return (
@@ -33,7 +44,7 @@ function HomePage() {
       <title>Ecommerce Project</title>
       <link rel="icon" type="image/svg+xml" href={homeFavicon} />
 
-      <Header />
+      <Header cart={cart} />
       <div className="home-page">
         <div className="products-grid">
           {products.map((product) => (
