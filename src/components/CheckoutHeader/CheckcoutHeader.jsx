@@ -1,6 +1,6 @@
 import './checkout-header.css'
 
-function CheckoutHeader() {
+function CheckoutHeader({ cart }) {
   return (
   <div className="checkout-header">
       <div className="header-content">

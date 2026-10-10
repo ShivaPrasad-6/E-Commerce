@@ -5,9 +5,9 @@ import "./HomePage.css";
 import homeFavicon from "../../assets/home-favicon.png";
 // import { products } from "../../assets/data/products";
 
-function HomePage() {
+function HomePage( { cart } ) {
   const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState([]);
+
 
   useEffect(() => {
     // fetch('http://localhost:3000/api/products')
@@ -28,15 +28,7 @@ function HomePage() {
       .catch((error) => {
         console.error("Error fetching products:", error);
       });
-    axios
-      .get("/api/cart-items")
-      .then((response) => {
-        console.log("Cart items fetched:", response.data);
-        setCart(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching cart items:", error);
-      });
+   
   }, []);
 
   return (
