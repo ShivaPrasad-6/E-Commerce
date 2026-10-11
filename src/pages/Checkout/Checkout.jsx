@@ -10,7 +10,7 @@ function Checkout( { cart } ) {
 
   console.log('Checkout component received cart:', cart); // Log the received cart prop
   const [cartItems, setCartItems] = useState(cart);
-  const [deliveryOption, setDeliveryOption] = useState([]);
+  const [deliveryOptions, setDeliveryOptions] = useState([]);
   const [paymentSummary, setPaymentSummary] = useState(null);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ function Checkout( { cart } ) {
       .then((response) => {
         // Handle the response and set the delivery options state if needed
         console.log('Delivery options fetched:', response.data);
-        setDeliveryOption(response.data); // Set the default delivery option
+        setDeliveryOptions(response.data); // Set the default delivery options
       })
       .catch((error) => {
         console.error('Error fetching delivery options:', error);
@@ -73,7 +73,7 @@ function Checkout( { cart } ) {
       <div className="checkout-grid">
         <OrderSummary
           cartItems={cartItems}
-          deliveryOption={deliveryOption}
+          deliveryOptions={deliveryOptions}
           handleDeliveryChange={handleDeliveryChange}
           selectedDeliveryOption={selectedDeliveryOption}
         />
