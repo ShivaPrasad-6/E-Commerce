@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-
 import Header from "../../components/Header/Header";
 import "./OrdersPage.css";
-import {OrdersGrid} from "./OrdersGrid";
+import { OrdersGrid } from "./OrdersGrid";
 import ordersFavicon from "../../assets/orders-favicon.png";
 
 export function OrdersPage({ cart }) {

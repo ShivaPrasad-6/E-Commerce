@@ -5,7 +5,6 @@ import CheckoutHeader from '../../components/CheckoutHeader/CheckcoutHeader'
 import { OrderSummary } from "./OrderSummary";
 import { PaymentSummary } from "./PaymentSummary";
 import cartFavicon from '../../assets/cart-favicon.png'
-import { formatPrice, formatDate } from '../../utils/formatting'
 
 function Checkout( { cart } ) {
 
