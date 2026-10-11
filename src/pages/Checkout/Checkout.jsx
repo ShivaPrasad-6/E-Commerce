@@ -1,26 +1,83 @@
+import { useState, useEffect } from 'react'
+import date from 'dayjs'
+import axios from 'axios'
 import './checkout.css'
 import CheckoutHeader from '../../components/CheckoutHeader/CheckcoutHeader'
 import cartFavicon from '../../assets/cart-favicon.png'
-import { formatPrice } from '../../utils/price'
+import { formatPrice, formatDate, cartQuantity } from '../../utils/formatting'
 
 function Checkout( { cart } ) {
-  console.log("Cart items in Checkout:", cart);
+
+  console.log('Checkout component received cart:', cart); // Log the received cart prop
+  const [cartItems, setCartItems] = useState(cart);
+  const [deliveryOption, setDeliveryOption] = useState([]);
+  const [paymentSummary, setPaymentSummary] = useState(null);
+  const cartQuantityValue = cartQuantity(cart);
+
+  useEffect(() => {
+    setCartItems(cart);
+  }, [cart]);
+
+  useEffect(() => {
+    // Fetch cart items from the API when the component mounts
+    axios
+      .get('/api/delivery-options?expand=estimatedDeliveryTime')
+      .then((response) => {
+        // Handle the response and set the delivery options state if needed
+        console.log('Delivery options fetched:', response.data);
+        setDeliveryOption(response.data); // Set the default delivery option
+      })
+      .catch((error) => {
+        console.error('Error fetching delivery options:', error);
+      });
+
+    axios
+      .get('/api/payment-summary')
+      .then((response) => {
+        // Handle the response and set the payment summary state if needed
+        console.log('Payment summary fetched:', response.data);
+        setPaymentSummary(response.data); // Set the default payment summary
+      })
+      .catch((error) => {
+        console.error('Error fetching payment summary:', error);
+      });
+  }, [])
+
+  const selectedDeliveryOption = (deliveryOption, item) => {
+    if (!deliveryOption || !Array.isArray(deliveryOption)) {
+      return null; // Return null if deliveryOption is not an array
+    } 
+    return deliveryOption.find(option => option.id === item.deliveryOptionId)
+  };
+
+  const handleDeliveryChange = (productId, selectedOptionId) => {
+    // Update the delivery option for the specific product in the cart
+    const updatedCart = cartItems.map(item => {
+      if (item.productId === productId) {
+        return { ...item, deliveryOptionId: selectedOptionId };
+      }
+      return item;
+    });
+
+    setCartItems(updatedCart); // Update the local state for demonstration purposes
+  };
+
   return (
     <>  
     <title>Checkout</title>
     <link rel="icon" type="image/svg+xml" href={cartFavicon} />
-    <CheckoutHeader />
+    <CheckoutHeader cart={cartItems} />
 
     <div className="checkout-page">
       <div className="page-title">Review your order</div>
 
       <div className="checkout-grid">
         <div className="order-summary">
-          {cart.map((item) => {
+          {cartItems.map((item) => {
             return (
               <div className="cart-item-container" key={item.productId}>
             <div className="delivery-date">
-              Delivery date: Tuesday, June 21
+              Delivery date: {selectedDeliveryOption(deliveryOption, item)?.estimatedDeliveryTimeMs ? formatDate(selectedDeliveryOption(deliveryOption, item).estimatedDeliveryTimeMs) : ''}
             </div>
 
             <div className="cart-item-details-grid">
@@ -51,45 +108,28 @@ function Checkout( { cart } ) {
                 <div className="delivery-options-title">
                   Choose a delivery option:
                 </div>
-                <div className="delivery-option">
-                  <input type="radio" checked
-                    className="delivery-option-input"
-                    name="delivery-option-1" />
-                  <div>
-                    <div className="delivery-option-date">
-                      Tuesday, June 21
+                {deliveryOption.map((option) => {
+                  const shippingPrice = option.priceCents === 0 ? 'FREE Shipping' : formatPrice(option.priceCents);
+                  return (
+                    <div key={option.id} className="delivery-option">
+                      <input
+                        type="radio"
+                        checked = {item.deliveryOptionId === option.id}
+                        onChange={() => handleDeliveryChange(item.productId, option.id)}
+                        className="delivery-option-input"
+                        name={`delivery-option-${item.productId}`}
+                      />
+                      <div>
+                        <div className="delivery-option-date">
+                          {formatDate(option.estimatedDeliveryTimeMs)}
+                        </div>
+                        <div className="delivery-option-price">
+                          Shipping Charge:{shippingPrice}
+                        </div>
+                      </div>
                     </div>
-                    <div className="delivery-option-price">
-                      FREE Shipping
-                    </div>
-                  </div>
-                </div>
-                <div className="delivery-option">
-                  <input type="radio"
-                    className="delivery-option-input"
-                    name="delivery-option-1" />
-                  <div>
-                    <div className="delivery-option-date">
-                      Wednesday, June 15
-                    </div>
-                    <div className="delivery-option-price">
-                      $4.99 - Shipping
-                    </div>
-                  </div>
-                </div>
-                <div className="delivery-option">
-                  <input type="radio"
-                    className="delivery-option-input"
-                    name="delivery-option-1" />
-                  <div>
-                    <div className="delivery-option-date">
-                      Monday, June 13
-                    </div>
-                    <div className="delivery-option-price">
-                      $9.99 - Shipping
-                    </div>
-                  </div>
-                </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -101,35 +141,33 @@ function Checkout( { cart } ) {
             <div className="payment-summary-title">
               Payment Summary
             </div>
-
-            <div className="payment-summary-row">
-              <div>Items (3):</div>
-              <div className="payment-summary-money">$42.75</div>
-            </div>
-
-            <div className="payment-summary-row">
-              <div>Shipping &amp; handling:</div>
-              <div className="payment-summary-money">$4.99</div>
-            </div>
-
-            <div className="payment-summary-row subtotal-row">
-              <div>Total before tax:</div>
-              <div className="payment-summary-money">$47.74</div>
-            </div>
-
-            <div className="payment-summary-row">
-              <div>Estimated tax (10%):</div>
-              <div className="payment-summary-money">$4.77</div>
-            </div>
-
-            <div className="payment-summary-row total-row">
-              <div>Order total:</div>
-              <div className="payment-summary-money">$52.51</div>
-            </div>
-
-            <button className="place-order-button button-primary">
-              Place your order
-            </button>
+            { paymentSummary && (
+              <>
+                <div className="payment-summary-row">
+                  <div>Items {paymentSummary.totalItems}:</div>
+                  <div className="payment-summary-money">{formatPrice(paymentSummary.productCostCents)}</div>
+                </div>
+                <div className="payment-summary-row">
+                  <div>Shipping &amp; handling:</div>
+                  <div className="payment-summary-money">{formatPrice(paymentSummary.shippingCostCents)}</div>
+                </div>
+                <div className="payment-summary-row subtotal-row">
+                  <div>Total before tax:</div>
+                  <div className="payment-summary-money">{formatPrice(paymentSummary.totalCostBeforeTaxCents)}</div>
+                </div>
+                <div className="payment-summary-row">
+                  <div>Estimated tax (10%):</div>
+                  <div className="payment-summary-money">{formatPrice(paymentSummary.taxCents)}</div>
+                </div>
+                <div className="payment-summary-row total-row">
+                  <div>Order total:</div>
+                  <div className="payment-summary-money">{formatPrice(paymentSummary.totalCostCents)}</div>
+                </div>
+                <button className="place-order-button button-primary">
+                  Place your order
+                </button>
+              </>
+            )}
         </div>
       </div>
     </div>
