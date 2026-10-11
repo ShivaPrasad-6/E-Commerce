@@ -1,37 +1,37 @@
 import { formatPrice, formatDate } from "../../utils/formatting";
 import "./checkout.css";
 
+import { DeliveryOptions } from "./DeliveryOptions";
+import { DeliveryDate } from "./DeliveryDate";
 
-export function OrderSummary({ cartItems, deliveryOption, handleDeliveryChange, selectedDeliveryOption }) {
+export function OrderSummary({ cartItems, deliveryOptions, handleDeliveryChange, selectedDeliveryOption }) {
   return (
     <>
       <div className="order-summary">
-        {cartItems.map((item) => {
+        {cartItems.map((cartItem) => { 
           return (
-            <div className="cart-item-container" key={item.productId}>
-              <div className="delivery-date">
-                Delivery date:
-                {selectedDeliveryOption(deliveryOption, item)
-                  ?.estimatedDeliveryTimeMs
-                  ? formatDate(
-                      selectedDeliveryOption(deliveryOption, item)
-                        .estimatedDeliveryTimeMs,
-                    )
-                  : ""}
-              </div>
+            <div className="cart-item-container" key={cartItem.productId}>
+
+              <DeliveryDate 
+                cartItem={cartItem} 
+                selectedDeliveryOption={selectedDeliveryOption}
+                deliveryOptions={deliveryOptions} 
+              />
+
+
 
               <div className="cart-item-details-grid">
-                <img className="product-image" src={item.product.image} />
+                <img className="product-image" src={cartItem.product.image} />
 
                 <div className="cart-item-details">
-                  <div className="product-name">{item.product.name}</div>
+                  <div className="product-name">{cartItem.product.name}</div>
                   <div className="product-price">
-                    {formatPrice(item.product.priceCents)}
+                    {formatPrice(cartItem.product.priceCents)}
                   </div>
                   <div className="product-quantity">
                     <span>
                       Quantity:{" "}
-                      <span className="quantity-label">{item.quantity}</span>
+                      <span className="quantity-label">{cartItem.quantity}</span>
                     </span>
                     <span className="update-quantity-link link-primary">
                       Update
@@ -41,39 +41,12 @@ export function OrderSummary({ cartItems, deliveryOption, handleDeliveryChange, 
                     </span>
                   </div>
                 </div>
+                <DeliveryOptions 
+                  handleDeliveryChange={handleDeliveryChange}
+                  cartItem={cartItem} 
+                  deliveryOptions={deliveryOptions}
+                />
 
-                <div className="delivery-options">
-                  <div className="delivery-options-title">
-                    Choose a delivery option:
-                  </div>
-                  {deliveryOption.map((option) => {
-                    const shippingPrice =
-                      option.priceCents === 0
-                        ? "FREE Shipping"
-                        : formatPrice(option.priceCents);
-                    return (
-                      <div key={option.id} className="delivery-option">
-                        <input
-                          type="radio"
-                          checked={item.deliveryOptionId === option.id}
-                          onChange={() =>
-                            handleDeliveryChange(item.productId, option.id)
-                          }
-                          className="delivery-option-input"
-                          name={`delivery-option-${item.productId}`}
-                        />
-                        <div>
-                          <div className="delivery-option-date">
-                            {formatDate(option.estimatedDeliveryTimeMs)}
-                          </div>
-                          <div className="delivery-option-price">
-                            Shipping Charge:{shippingPrice}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
               </div>
             </div>
           );
