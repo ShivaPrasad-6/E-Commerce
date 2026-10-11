@@ -3,7 +3,7 @@ import axios from "axios";
 import Header from "../../components/Header/Header";
 import "./HomePage.css";
 import homeFavicon from "../../assets/home-favicon.png";
-import { formatPrice } from "../../utils/price";
+import { formatPrice } from "../../utils/formatting";
 // import { products } from "../../assets/data/products";
 
 function HomePage( { cart } ) {

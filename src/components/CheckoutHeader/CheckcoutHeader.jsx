@@ -1,3 +1,4 @@
+import { cartQuantity } from '../../utils/formatting';
 import './checkout-header.css'
 
 function CheckoutHeader({ cart }) {
@@ -13,7 +14,7 @@ function CheckoutHeader({ cart }) {
 
         <div className="checkout-header-middle-section">
           Checkout (<a className="return-to-home-link"
-            href="index.html">3 items</a>)
+            href="index.html">{cartQuantity(cart)} items</a>)
         </div>
 
         <div className="checkout-header-right-section">
