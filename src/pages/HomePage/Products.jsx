@@ -3,8 +3,10 @@ import axios from "axios";
 import { formatPrice } from "../../utils/formatting";
 import "./HomePage.css";
 
+import { Product } from "./Product";
 
-export function Products() {
+
+export function Products({ fetchCartItems }) {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -18,61 +20,28 @@ export function Products() {
     //     console.error('Error fetching products:', error);
     //   });
 
-    axios
-      .get("/api/products")
-      .then((response) => {
+    // axios
+    //   .get("/api/products")
+    //   .then((response) => {
+    //     setProducts(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error fetching products:", error);
+    //   });
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("/api/products");
         setProducts(response.data);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching products:", error);
-      });
+      }
+    };
+    fetchProducts();
   }, []);
   return (
     <div className="products-grid">
       {products.map((product) => (
-        <div className="product-container" key={product.id}>
-          <div className="product-image-container">
-            <img className="product-image" src={product.image} />
-          </div>
-          <div className="product-name limit-text-to-2-lines">
-            {product.name}
-          </div>
-          <div className="product-rating-container">
-            <img
-              className="product-rating-stars"
-              src={`images/ratings/rating-${product.rating.stars * 10}.png`}
-            />
-            <div className="product-rating-count link-primary">
-              {product.rating.count}
-            </div>
-          </div>
-          <div className="product-price">{formatPrice(product.priceCents)}</div>
-          <div className="product-quantity-container">
-            <select>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-            </select>
-          </div>
-
-          <div className="product-spacer"></div>
-
-          <div className="added-to-cart">
-            <img src="images/icons/checkmark.png" />
-            Added
-          </div>
-
-          <button className="add-to-cart-button button-primary">
-            Add to Cart
-          </button>
-        </div>
+        <Product product={product} key={product.id} fetchCartItems={fetchCartItems} />
       ))}
     </div>
   );

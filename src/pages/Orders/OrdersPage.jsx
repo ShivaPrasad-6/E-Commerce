@@ -10,16 +10,18 @@ export function OrdersPage({ cart }) {
 
   useEffect(() => {
     // Fetch orders from the API when the component mounts
-    axios
-      .get("/api/orders?expand=products")
-      .then((response) => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get("/api/orders?expand=products");
         // Handle the response and set the orders state if needed
         console.log("Orders fetched:", response.data);
         setOrders(response.data); // Set the default orders
-      })
-      .catch((error) => {
+      }
+      catch (error) {
         console.error("Error fetching orders:", error);
-      });
+      }
+    }
+    fetchOrders();
   }, []);
 
   return (

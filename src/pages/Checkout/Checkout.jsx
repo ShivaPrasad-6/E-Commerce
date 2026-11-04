@@ -19,28 +19,27 @@ function Checkout( { cart } ) {
 
   useEffect(() => {
     // Fetch cart items from the API when the component mounts
-    axios
-      .get('/api/delivery-options?expand=estimatedDeliveryTime')
-      .then((response) => {
-        // Handle the response and set the delivery options state if needed
-        console.log('Delivery options fetched:', response.data);
-        setDeliveryOptions(response.data); // Set the default delivery options
-      })
-      .catch((error) => {
-        console.error('Error fetching delivery options:', error);
-      });
-
-    axios
-      .get('/api/payment-summary')
-      .then((response) => {
+    const fetchDeliveryOptions = async () => {
+      try {
+        const response = await axios.get('/api/delivery-options?expand=estimatedDeliveryTime');
+         setDeliveryOptions(response.data);
+        } catch (error) {
+          console.error('Error fetching delivery options:', error);
+        }
+    };
+    fetchDeliveryOptions();
+    const fetchPaymentSummary = async () => {
+      try {
+        const response = await axios.get('/api/payment-summary');
         // Handle the response and set the payment summary state if needed
-        console.log('Payment summary fetched:', response.data);
         setPaymentSummary(response.data); // Set the default payment summary
-      })
-      .catch((error) => {
+      }
+      catch(error) {
         console.error('Error fetching payment summary:', error);
-      });
-  }, [])
+      };
+    };
+    fetchPaymentSummary();
+  }, []);
 
   const selectedDeliveryOption = (deliveryOption, item) => {
     if (!deliveryOption || !Array.isArray(deliveryOption)) {
