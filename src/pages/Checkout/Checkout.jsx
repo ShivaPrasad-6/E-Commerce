@@ -6,7 +6,7 @@ import { OrderSummary } from "./OrderSummary";
 import { PaymentSummary } from "./PaymentSummary";
 import cartFavicon from '../../assets/cart-favicon.png'
 
-function Checkout( { cart } ) {
+function Checkout( { cart, fetchCartItems } ) {
 
   console.log('Checkout component received cart:', cart); // Log the received cart prop
   const [cartItems, setCartItems] = useState(cart);
@@ -28,6 +28,8 @@ function Checkout( { cart } ) {
         }
     };
     fetchDeliveryOptions();
+  }, []);
+  useEffect(() => {
     const fetchPaymentSummary = async () => {
       try {
         const response = await axios.get('/api/payment-summary');
@@ -39,7 +41,7 @@ function Checkout( { cart } ) {
       };
     };
     fetchPaymentSummary();
-  }, []);
+  }, [cart]);
 
   const selectedDeliveryOption = (deliveryOption, item) => {
     if (!deliveryOption || !Array.isArray(deliveryOption)) {
@@ -75,6 +77,7 @@ function Checkout( { cart } ) {
           deliveryOptions={deliveryOptions}
           handleDeliveryChange={handleDeliveryChange}
           selectedDeliveryOption={selectedDeliveryOption}
+          fetchCartItems={fetchCartItems}
         />
         <PaymentSummary paymentSummary={paymentSummary} />
       </div>

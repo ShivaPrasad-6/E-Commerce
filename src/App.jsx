@@ -21,12 +21,12 @@ function App() {
     };
   useEffect(() => {
     fetchCartItems();
-  }, [cart]);
+  }, []);
 
   return (
     <Routes>
       <Route path="/" element={<HomePage cart={cart} fetchCartItems={fetchCartItems} />} />
-      <Route path="/checkout" element={<Checkout cart={cart} />} />
+      <Route path="/checkout" element={<Checkout cart={cart} fetchCartItems={fetchCartItems} />} />
       <Route path="/orders" element={<OrdersPage />} />
       <Route path="/tracking" element={<Tracking />} />
     </Routes>
