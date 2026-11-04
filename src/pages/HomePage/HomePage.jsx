@@ -3,7 +3,7 @@ import "./HomePage.css";
 import homeFavicon from "../../assets/home-favicon.png";
 import { Products } from "./Products";
 
-function HomePage( { cart } ) {
+function HomePage( { cart, fetchCartItems } ) {
 
   return (
     <>
@@ -12,7 +12,7 @@ function HomePage( { cart } ) {
 
       <Header cart={cart} />
       <div className="home-page">
-        <Products />
+        <Products fetchCartItems={fetchCartItems} />
       </div>
     </>
   );
