@@ -18,14 +18,23 @@ export function Products() {
     //     console.error('Error fetching products:', error);
     //   });
 
-    axios
-      .get("/api/products")
-      .then((response) => {
+    // axios
+    //   .get("/api/products")
+    //   .then((response) => {
+    //     setProducts(response.data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error fetching products:", error);
+    //   });
+    try {
+      const getProducts = async () => {
+        const response = await axios.get("/api/products");
         setProducts(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching products:", error);
-      });
+      };
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+    getProducts();
   }, []);
   return (
     <div className="products-grid">
