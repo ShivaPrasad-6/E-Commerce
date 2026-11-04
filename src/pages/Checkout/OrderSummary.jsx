@@ -4,7 +4,7 @@ import { DeliveryOptions } from "./DeliveryOptions";
 import { DeliveryDate } from "./DeliveryDate";
 import { OrderDetails } from "./OrderDetails";
 
-export function OrderSummary({ cartItems, deliveryOptions, handleDeliveryChange, selectedDeliveryOption }) {
+export function OrderSummary({ cartItems, deliveryOptions, handleDeliveryChange, selectedDeliveryOption, fetchCartItems }) {
   return (
     <>
       <div className="order-summary">
@@ -25,6 +25,7 @@ export function OrderSummary({ cartItems, deliveryOptions, handleDeliveryChange,
                   handleDeliveryChange={handleDeliveryChange}
                   cartItem={cartItem} 
                   deliveryOptions={deliveryOptions}
+                  fetchCartItems={fetchCartItems}
                 />
 
               </div>

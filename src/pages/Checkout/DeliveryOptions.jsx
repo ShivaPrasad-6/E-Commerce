@@ -1,3 +1,4 @@
+import axios from "axios";
 import { formatPrice, formatDate } from "../../utils/formatting";
 import "./checkout.css";
 
@@ -5,7 +6,18 @@ export function DeliveryOptions({
   handleDeliveryChange,
   cartItem,
   deliveryOptions,
+  fetchCartItems,
 }) {
+  const updateDeliveryOption = async (deliveryOptionId) => {
+    // Update the delivery option for the specific product in the cart
+    await axios
+      .put(`/api/cart-items/${cartItem.productId}`, {
+        deliveryOptionId: deliveryOptionId,
+      })
+    handleDeliveryChange(cartItem.productId, deliveryOptionId); // Update the local state for demonstration purposes
+    await fetchCartItems(); // Fetch the updated cart items
+  };
+
   return (
     <>
       <div className="delivery-options">
@@ -16,11 +28,11 @@ export function DeliveryOptions({
               ? "FREE Shipping"
               : formatPrice(option.priceCents);
           return (
-            <div key={option.id} className="delivery-option">
+            <div key={option.id} className="delivery-option" onClick={() => updateDeliveryOption(option.id)}>
               <input
                 type="radio"
                 checked={cartItem.deliveryOptionId === option.id}
-                onChange={() => handleDeliveryChange(cartItem.productId, option.id)}
+                onChange={() => {}}
                 className="delivery-option-input"
                 name={`delivery-option-${cartItem.productId}`}
               />
