@@ -19,7 +19,7 @@ export function OrderSummary({ cartItems, deliveryOptions, handleDeliveryChange,
               />
 
               <div className="cart-item-details-grid">
-                <OrderDetails cartItem={cartItem} />
+                <OrderDetails cartItem={cartItem} fetchCartItems={fetchCartItems} />
 
                 <DeliveryOptions 
                   handleDeliveryChange={handleDeliveryChange}
