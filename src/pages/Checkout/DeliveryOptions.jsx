@@ -10,10 +10,14 @@ export function DeliveryOptions({
 }) {
   const updateDeliveryOption = async (deliveryOptionId) => {
     // Update the delivery option for the specific product in the cart
-    await axios
-      .put(`/api/cart-items/${cartItem.productId}`, {
-        deliveryOptionId: deliveryOptionId,
-      })
+    try {
+      await axios
+        .put(`/api/cart-items/${cartItem.productId}`, {
+          deliveryOptionId: deliveryOptionId,
+        });
+    } catch (error) {
+      console.error("Error updating delivery option:", error);
+    }
     handleDeliveryChange(cartItem.productId, deliveryOptionId); // Update the local state for demonstration purposes
     await fetchCartItems(); // Fetch the updated cart items
   };

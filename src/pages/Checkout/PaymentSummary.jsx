@@ -1,7 +1,21 @@
+import axios from "axios";
+import {useNavigate} from "react-router";
 import { formatPrice } from "../../utils/formatting";
 import "./checkout.css";
 
-export function PaymentSummary({ paymentSummary }) {
+export function PaymentSummary({ paymentSummary, fetchCartItems }) {
+  const navigate = useNavigate();
+
+  const createOrder = async () => {
+    try {
+      await axios.post("/api/orders",{paymentSummary}); // Send the payment summary to the server to create an order
+      await fetchCartItems(); // Fetch the updated cart items
+      navigate("/orders"); // Navigate to the orders page
+    } catch (error) {
+      console.error("Error creating order:", error);
+    }
+  };
+
   return (
     <>
       <div className="payment-summary">
@@ -38,7 +52,8 @@ export function PaymentSummary({ paymentSummary }) {
                 {formatPrice(paymentSummary.totalCostCents)}
               </div>
             </div>
-            <button className="place-order-button button-primary">
+            <button className="place-order-button button-primary"
+              onClick={() => createOrder()}>
               Place your order
             </button>
           </>
