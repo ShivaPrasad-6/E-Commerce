@@ -79,7 +79,7 @@ function Checkout( { cart, fetchCartItems } ) {
           selectedDeliveryOption={selectedDeliveryOption}
           fetchCartItems={fetchCartItems}
         />
-        <PaymentSummary paymentSummary={paymentSummary} />
+        <PaymentSummary paymentSummary={paymentSummary} fetchCartItems={fetchCartItems} />
       </div>
     </div>
     </>
