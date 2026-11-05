@@ -1,7 +1,17 @@
+import axios from "axios";
 import "./checkout.css";
 import { formatPrice } from "../../utils/formatting";
 
-export function OrderDetails({cartItem}) {
+export function OrderDetails({cartItem, fetchCartItems}) {
+
+  const deleteCartItem = async (productId) => {
+    try {
+      await axios.delete(`/api/cart-items/${productId}`);
+      await fetchCartItems(); // Fetch the updated cart items
+    } catch (error) {
+      console.error("Error deleting cart item:", error);
+    }}
+
   return (
     <>
       <img className="product-image" src={cartItem.product.image} />
@@ -17,7 +27,9 @@ export function OrderDetails({cartItem}) {
             <span className="quantity-label">{cartItem.quantity}</span>
           </span>
           <span className="update-quantity-link link-primary">Update</span>
-          <span className="delete-quantity-link link-primary">Delete</span>
+          <span className="delete-quantity-link link-primary" onClick={() => deleteCartItem(cartItem.productId)}>
+            Delete
+          </span>
         </div>
       </div>
     </>
