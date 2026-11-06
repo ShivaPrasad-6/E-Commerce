@@ -24,7 +24,8 @@ export function Product({ product, fetchCartItems }) {
   return (
     <div className="product-container" key={product.id}>
       <div className="product-image-container">
-        <img className="product-image" src={product.image} />
+        <img className="product-image" src={product.image}
+         data-testid="product-image"/>
       </div>
       <div className="product-name limit-text-to-2-lines">
         {product.name}
