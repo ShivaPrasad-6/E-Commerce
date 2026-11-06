@@ -63,7 +63,8 @@ export function Product({ product, fetchCartItems }) {
       </div>
 
       <button className="add-to-cart-button button-primary"
-        onClick={() => handleAddToCart(product.id)}>
+        onClick={() => handleAddToCart(product.id)}
+        data-testid="add-to-cart-button">
         Add to Cart
       </button>
     </div>
